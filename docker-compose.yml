@@ -1,0 +1,90 @@
+version: '3'
+services:
+  mysql:
+    platform: linux/x86_64
+    image: mysql:5.7
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./hiveddls:/docker-entrypoint-initdb.d
+      - ./share/my.cnf:/etc/mysql/conf.d/my.cnf
+    restart: always
+    environment:
+      MYSQL_DATABASE: metastore
+      MYSQL_ROOT_PASSWORD: root
+    container_name: db_mysql
+    networks:
+      - app-net
+  workspace:
+    build: ./
+    command: sleep infinity
+    depends_on:
+      - mysql
+    container_name: pyspark
+    networks:
+      - app-net
+  kafka:
+    build: ./kafka
+    command: sh /etc/rc.local/start_up.sh
+    container_name: kafka
+    networks:
+      - app-net
+  nodejs:
+    build: ./nodejs
+    command: node /usr/src/app/express.js
+    container_name: nodejs
+    networks:
+      - app-net
+  rundeck:
+    image: rundeck/rundeck:4.0.0
+    environment:
+        RUNDECK_DATABASE_DRIVER: com.mysql.jdbc.Driver
+        RUNDECK_DATABASE_USERNAME: root
+        RUNDECK_DATABASE_PASSWORD: root
+        RUNDECK_DATABASE_URL: jdbc:mysql://db_mysql_rundeck:3307/rundeck?autoReconnect=true&useSSL=false
+        RUNDECK_GRAILS_URL: http://example.com:4440
+    volumes:
+      - ${RUNDECK_LICENSE_FILE:-/dev/null}:/home/rundeck/etc/rundeckpro-license.key
+    ports:
+      - 4440:4440
+    networks:
+      - app-net
+    container_name: rundeck_wf
+  mysql_ruundeck:
+    platform: linux/x86_64
+    image: mysql:5.7
+    volumes:
+      - ./mysql_rundeck/data:/var/lib/mysql
+      - ./share/my.cnf:/etc/mysql/conf.d/my.cnf
+    restart: always
+    environment:
+      MYSQL_DATABASE: rundeck
+      MYSQL_ROOT_PASSWORD: root
+    container_name: db_mysql_rundeck
+    ports:
+        - 3307:3306
+    networks:
+      - app-net
+  metabase:
+    image: metabase/metabase:v0.42.3
+    env_file: ./env
+    volumes:
+      - ./metabase-data:/metabase-data
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres-mb
+    networks:
+      - app-net
+  postgres-mb:
+    image: postgres:13.6-bullseye
+    env_file: ./env
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
