@@ -4,7 +4,7 @@ services:
     platform: linux/x86_64
     image: mysql:5.7
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      - ./data/mysql/data:/var/lib/mysql
       - ./hiveddls:/docker-entrypoint-initdb.d
       - ./share/my.cnf:/etc/mysql/conf.d/my.cnf
     restart: always
@@ -55,7 +55,7 @@ services:
     platform: linux/x86_64
     image: mysql:5.7
     volumes:
-      - ./mysql_rundeck/data:/var/lib/mysql
+      - ./data/mysql_rundeck/data:/var/lib/mysql
       - ./share/my.cnf:/etc/mysql/conf.d/my.cnf
     restart: always
     environment:
@@ -71,22 +71,24 @@ services:
     image: metabase/metabase:v0.42.3
     env_file: ./env
     volumes:
-      - ./metabase-data:/metabase-data
+      - ./data/metabase-data:/metabase-data
     ports:
       - 3000:3000
     depends_on:
       - postgres-mb
     networks:
       - app-net
+    container_name: metabase_bi
   postgres-mb:
     image: postgres:13.6-bullseye
     env_file: ./env
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./data/postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
     networks:
       - app-net
+    container_name: metabase_postgres
 
 networks:
   app-net:
