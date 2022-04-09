@@ -5,8 +5,8 @@ services:
     image: mysql:5.7
     volumes:
       - ./data/mysql/data:/var/lib/mysql
-      - ./hiveddls:/docker-entrypoint-initdb.d
-      - ./share/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./files/hiveddls:/docker-entrypoint-initdb.d
+      - ./files/share/my.cnf:/etc/mysql/conf.d/my.cnf
     restart: always
     environment:
       MYSQL_DATABASE: metastore
@@ -15,7 +15,7 @@ services:
     networks:
       - app-net
   workspace:
-    build: ./
+    build: ./files/
     command: sleep infinity
     depends_on:
       - mysql
@@ -23,13 +23,13 @@ services:
     networks:
       - app-net
   kafka:
-    build: ./kafka
+    build: ./files/kafka
     command: sh /etc/rc.local/start_up.sh
     container_name: kafka
     networks:
       - app-net
   nodejs:
-    build: ./nodejs
+    build: ./files/nodejs
     command: node /usr/src/app/express.js
     container_name: nodejs
     networks:
@@ -56,7 +56,7 @@ services:
     image: mariadb:10.6
     volumes:
       - ./data/mysql_rundeck/data:/var/lib/mysql
-      - ./share/my_maria.cnf:/etc/mysql/conf.d/my.cnf
+      - ./files/share/my_maria.cnf:/etc/mysql/conf.d/my.cnf
     restart: always
     environment:
       MYSQL_DATABASE: rundeck
