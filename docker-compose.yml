@@ -35,9 +35,9 @@ services:
     networks:
       - app-net
   rundeck:
-    image: rundeck/rundeck:4.0.0
+    image: rundeck/rundeck:3.4.10
     environment:
-        RUNDECK_DATABASE_DRIVER: com.mysql.jdbc.Driver
+        RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
         RUNDECK_DATABASE_USERNAME: root
         RUNDECK_DATABASE_PASSWORD: root
         RUNDECK_DATABASE_URL: jdbc:mysql://db_mysql_rundeck:3307/rundeck?autoReconnect=true&useSSL=false
