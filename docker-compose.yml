@@ -46,6 +46,8 @@ services:
       - ${RUNDECK_LICENSE_FILE:-/dev/null}:/home/rundeck/etc/rundeckpro-license.key
     ports:
       - 4440:4440
+    depends_on:
+      - mysql_ruundeck
     networks:
       - app-net
     container_name: rundeck_wf
@@ -59,9 +61,10 @@ services:
     environment:
       MYSQL_DATABASE: rundeck
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_TCP_PORT: 3307
     container_name: db_mysql_rundeck
     ports:
-        - 3307:3306
+        - 3307:3307
     networks:
       - app-net
   metabase:
