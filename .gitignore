@@ -132,3 +132,4 @@ metabase-data/
 postgres-data/
 mysql/
 mysql_rundeck/
+data/
