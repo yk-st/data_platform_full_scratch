@@ -37,7 +37,7 @@ services:
     networks:
       - app-net
   rundeck:
-    image: rundeck/rundeck:SNAPSHOT
+    image: rundeck/rundeck:3.3.10
     environment:
         RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
         RUNDECK_DATABASE_USERNAME: root
@@ -47,8 +47,10 @@ services:
         RUNDECK_SERVER_ADDRESS: 0.0.0.0
     volumes:
       - ${RUNDECK_LICENSE_FILE:-/dev/null}:/home/rundeck/etc/rundeckpro-license.key
+      - ./data/rundeck_data:/home/rundeck/server/data
     ports:
       - 4440:4440
+    tty: true
     depends_on:
       - mysql_ruundeck
     networks:
