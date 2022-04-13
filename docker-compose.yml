@@ -17,8 +17,6 @@ services:
   workspace:
     build: ./files
     command: sleep infinity
-    volumes:
-      - ./storageLayer/:/home/pyspark/storageLayer/
     depends_on:
       - mysql
     container_name: pyspark
