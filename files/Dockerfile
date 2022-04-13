@@ -23,10 +23,12 @@ RUN sudo apt install -y git
 
 WORKDIR /home/pyspark 
 
+RUN wget "https://dl.digdag.io/digdag-latest"
+RUN chmod 777 digdag-latest
+RUN echo 'export PATH="$HOME:$PATH"' >> ~/.bashrc
+
 RUN wget https://dlcdn.apache.org/spark/spark-3.2.1/spark-3.2.1-bin-hadoop3.2.tgz
 RUN tar -xzvf spark-3.2.1-bin-hadoop3.2.tgz
-
-RUN sudo apt install -y vim
 
 RUN sudo mkdir -p /tmp/spark-events 
 RUN sudo chmod 777 -R /tmp/spark-events
@@ -49,10 +51,10 @@ COPY ./share/log4j.properties /home/pyspark/spark/conf/
 COPY ./hiveddls/2.3.0_utf-8.sql /home/pyspark/
 COPY ./hiveddls/txn.sql /home/pyspark/
 
-RUN wget https://dlcdn.apache.org/kafka/3.0.0/kafka_2.13-3.0.0.tgz
-RUN tar -xzvf kafka_2.13-3.0.0.tgz
+RUN wget https://dlcdn.apache.org/kafka/3.0.1/kafka_2.13-3.0.1.tgz
+RUN tar -xzvf kafka_2.13-3.0.1.tgz
 
-RUN ln -s kafka_2.13-3.0.0 kafka
+RUN ln -s kafka_2.13-3.0.1 kafka
 
 RUN git clone https://github.com/edenhill/librdkafka.git
 WORKDIR /home/pyspark/librdkafka/
