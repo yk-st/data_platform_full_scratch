@@ -36,42 +36,6 @@ services:
     container_name: nodejs
     networks:
       - app-net
-  # rundeck:
-  #   image: rundeck/rundeck:3.3.10
-  #   environment:
-  #       RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
-  #       RUNDECK_DATABASE_USERNAME: root
-  #       RUNDECK_DATABASE_PASSWORD: root
-  #       RUNDECK_DATABASE_URL: jdbc:mariadb://db_mysql_rundeck:3307/rundeck?autoReconnect=true&useSSL=false
-  #       RUNDECK_GRAILS_URL: http://127.0.0.1:4440
-  #       RUNDECK_SERVER_ADDRESS: 0.0.0.0
-  #   volumes:
-  #     - ${RUNDECK_LICENSE_FILE:-/dev/null}:/home/rundeck/etc/rundeckpro-license.key
-  #     - ./data/rundeck_data:/home/rundeck/server/data
-  #   ports:
-  #     - 4440:4440
-  #   tty: true
-  #   depends_on:
-  #     - mysql_ruundeck
-  #   networks:
-  #     - app-net
-  #   container_name: rundeck_wf
-  # mysql_ruundeck:
-  #   platform: linux/x86_64
-  #   image: mariadb:10.6
-  #   volumes:
-  #     - ./data/mysql_rundeck/data:/var/lib/mysql
-  #     - ./files/share/my_maria.cnf:/etc/mysql/conf.d/my.cnf
-  #   restart: always
-  #   environment:
-  #     MYSQL_DATABASE: rundeck
-  #     MYSQL_ROOT_PASSWORD: root
-  #     MYSQL_TCP_PORT: 3307
-  #   container_name: db_mysql_rundeck
-  #   ports:
-  #       - 3307:3307
-  #   networks:
-  #     - app-net
   metabase:
     image: metabase/metabase:v0.42.3
     env_file: ./env
