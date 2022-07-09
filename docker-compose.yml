@@ -11,29 +11,29 @@ services:
     environment:
       MYSQL_DATABASE: metastore
       MYSQL_ROOT_PASSWORD: root
-    container_name: db_mysql
+    container_name: db_mysql_big
     networks:
-      - app-net
+      - app-net-big
   workspace:
     build: ./files
     command: sleep infinity
     depends_on:
       - mysql
-    container_name: pyspark
+    container_name: pyspark_big
     networks:
-      - app-net
+      - app-net-big
   kafka:
     build: ./files/kafka
     command: sh /etc/rc.local/start_up.sh
-    container_name: kafka
+    container_name: kafka_big
     networks:
-      - app-net
+      - app-net-big
   nodejs:
     build: ./files/nodejs
     command: node /usr/src/app/express.js
-    container_name: nodejs
+    container_name: nodejs_big
     networks:
-      - app-net
+      - app-net-big
   metabase:
     image: metabase/metabase:v0.42.3
     env_file: ./env
@@ -44,19 +44,49 @@ services:
     depends_on:
       - postgres-mb
     networks:
-      - app-net
-    container_name: metabase_bi
+      - app-net-big
+    container_name: metabase_bi_big
   postgres-mb:
-    image: postgres:13.6-bullseye
-    env_file: ./env
+    build: ./postgres
     volumes:
       - ./data/postgres-data:/var/lib/postgresql/data
+    env_file: ./env
     ports:
       - 5432:5432
     networks:
-      - app-net
-    container_name: metabase_postgres
+      - app-net-big
+    container_name: metabase_postgres_big
+  dbserver:
+    container_name: postgres_etl_big
+    build: ./postgres
+    volumes:
+      - ./data/postgres-data3:/var/lib/postgresql/data
+    env_file: ./env
+    ports:
+      - 5434:5434
+    tty: true
+  digdag:
+    container_name: digdag_etl_big
+    build: ./digdag
+    volumes:
+      - ./digdag:/root
+      - /tmp:/tmp
+    ports:
+      - "0.0.0.0:65432:65432"
+    entrypoint: >
+      sh -c "chmod 755 /root/startup.sh && /root/startup.sh && /bin/bash"
+    tty: true
+  postgres-data:
+    build: ./postgres
+    volumes:
+      - ./data/postgres-data2:/var/lib/postgresql/data
+    env_file: ./env
+    ports:
+      - 5433:5433
+    networks:
+      - app-net-big
+    container_name: postgres_data_big
 
 networks:
-  app-net:
+  app-net-big:
     driver: bridge
