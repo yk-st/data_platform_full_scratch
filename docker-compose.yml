@@ -85,7 +85,7 @@ services:
     entrypoint: >
       sh -c "chmod 755 /root/startup.sh && /root/startup.sh && /bin/bash"
     tty: true
-  # 整形データ格納用コンテナ
+  # 整形データ格納用データベース
   postgres-data:
     build: ./postgres
     volumes:
