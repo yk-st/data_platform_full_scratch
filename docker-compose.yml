@@ -15,6 +15,13 @@ services:
     container_name: db_mysql_big
     networks:
       - app-net-big
+  # ストリーミング
+  kafka:
+    build: ./files/kafka
+    command: sh /etc/rc.local/start_up.sh
+    container_name: kafka_big
+    networks:
+      - app-net-big
   # ワーキングコンテナ
   workspace:
     build: ./files
@@ -22,13 +29,6 @@ services:
     depends_on:
       - mysql
     container_name: pyspark_big
-    networks:
-      - app-net-big
-  # ストリーミング
-  kafka:
-    build: ./files/kafka
-    command: sh /etc/rc.local/start_up.sh
-    container_name: kafka_big
     networks:
       - app-net-big
   # ストリーミング
