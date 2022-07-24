@@ -1,0 +1,4 @@
+# for postgres
+POSTGRES_DB=digdag
+POSTGRES_PASSWORD=password
+POSTGRES_USER=digdag

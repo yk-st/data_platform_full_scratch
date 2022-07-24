@@ -41,7 +41,7 @@ services:
   # BIツール
   metabase:
     image: metabase/metabase:v0.42.3
-    env_file: ./env
+    env_file: ./postgres/envbi
     volumes:
       - ./data/metabase-data:/metabase-data
     ports:
@@ -57,42 +57,51 @@ services:
     volumes:
       - ./data/postgres-data:/var/lib/postgresql/data
       - ./posgreinit:/docker-entrypoint-initdb.d
-    env_file: ./env
+    env_file: ./postgres/envbi
     ports:
       - 5432:5432
     networks:
       - app-net-big
     container_name: metabase_postgres_big
   # digdagデータ保存DBサーバー
-  dbserver:
+  digdagdb:
     container_name: postgres_etl_big
     build: ./postgres
     volumes:
       - ./data/postgres-data3:/var/lib/postgresql/data
-    env_file: ./env
+      #- ./digdag/initsql:/docker-entrypoint-initdb.d
+    env_file: ./postgres/envdigdag
     ports:
       - 5434:5434
+    command: -p 5434
     tty: true
+    networks:
+      - app-net-big
   # digdagデータ保存DBサーバー
   digdag:
     container_name: digdag_etl_big
     build: ./digdag
     volumes:
       - ./digdag:/root
-      - /tmp:/tmp
+      - ./data/digdag_tmp:/tmp
     ports:
       - "0.0.0.0:65432:65432"
+    depends_on:
+      - digdagdb
     entrypoint: >
       sh -c "chmod 755 /root/startup.sh && /root/startup.sh && /bin/bash"
     tty: true
+    networks:
+      - app-net-big
   # 整形データ格納用データベース
   postgres-data:
     build: ./postgres
     volumes:
       - ./data/postgres-data2:/var/lib/postgresql/data
-    env_file: ./env2
+    env_file: ./postgres/env2
     ports:
       - 5433:5433
+    command: -p 5433
     networks:
       - app-net-big
     container_name: postgres_data_big
