@@ -1,5 +1,6 @@
 version: '3'
 services:
+  #　メタデータ保存用Mysql
   mysql:
     platform: linux/x86_64
     image: mysql:5.7
@@ -14,6 +15,7 @@ services:
     container_name: db_mysql_big
     networks:
       - app-net-big
+  # ワーキングコンテナ
   workspace:
     build: ./files
     command: sleep infinity
@@ -22,18 +24,21 @@ services:
     container_name: pyspark_big
     networks:
       - app-net-big
+  # ストリーミング
   kafka:
     build: ./files/kafka
     command: sh /etc/rc.local/start_up.sh
     container_name: kafka_big
     networks:
       - app-net-big
+  # ストリーミング
   nodejs:
     build: ./files/nodejs
     command: node /usr/src/app/express.js
     container_name: nodejs_big
     networks:
       - app-net-big
+  # BIツール
   metabase:
     image: metabase/metabase:v0.42.3
     env_file: ./env
@@ -46,16 +51,19 @@ services:
     networks:
       - app-net-big
     container_name: metabase_bi_big
+  # BIツールバックDB兼データソース
   postgres-mb:
     build: ./postgres
     volumes:
       - ./data/postgres-data:/var/lib/postgresql/data
+      - ./posgreinit:/docker-entrypoint-initdb.d
     env_file: ./env
     ports:
       - 5432:5432
     networks:
       - app-net-big
     container_name: metabase_postgres_big
+  # digdagデータ保存DBサーバー
   dbserver:
     container_name: postgres_etl_big
     build: ./postgres
@@ -65,6 +73,7 @@ services:
     ports:
       - 5434:5434
     tty: true
+  # digdagデータ保存DBサーバー
   digdag:
     container_name: digdag_etl_big
     build: ./digdag
@@ -76,11 +85,12 @@ services:
     entrypoint: >
       sh -c "chmod 755 /root/startup.sh && /root/startup.sh && /bin/bash"
     tty: true
+  # 整形データ格納用コンテナ
   postgres-data:
     build: ./postgres
     volumes:
       - ./data/postgres-data2:/var/lib/postgresql/data
-    env_file: ./env
+    env_file: ./env2
     ports:
       - 5433:5433
     networks:

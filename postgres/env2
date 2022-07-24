@@ -1,0 +1,7 @@
+# for metabase
+JAVA_TIMEZONE=Asia/Tokyo
+JAVA_OPTS=-Xmx6g
+
+# for postgres
+POSTGRES_DB=accesslayer
+POSTGRES_PASSWORD=password

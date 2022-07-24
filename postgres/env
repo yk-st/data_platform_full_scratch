@@ -1,0 +1,14 @@
+# for metabase
+MB_DB_FILE=/metabase-data/metabase.db
+MB_DB_TYPE=postgres
+MB_DB_DBNAME=metabase
+MB_DB_PORT=5432
+MB_DB_USER=postgres
+MB_DB_PASS=password
+MB_DB_HOST=postgres-mb
+JAVA_TIMEZONE=Asia/Tokyo
+JAVA_OPTS=-Xmx6g
+
+# for postgres
+POSTGRES_DB=metabase
+POSTGRES_PASSWORD=password
