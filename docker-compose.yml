@@ -45,6 +45,8 @@ services:
     build: ./files/nodejs
     command: node /usr/src/app/express.js
     container_name: nodejs_big
+    ports:
+      - 3001:3001
     networks:
       - app-net-big
   # BIツール
