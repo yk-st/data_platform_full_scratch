@@ -1,0 +1,25 @@
+timezone: Asia/Tokyo
+
+schedule:
+  daily>: 07:00:00
+
+_export:
+  workflow_name: "postgres2parquet"
+  start_msg:     "digdag ${workflow_name} start"
+  end_msg:       "digdag ${workflow_name} finish"
+  error_msg:     "digdag ${workflow_name} error"
+
++strat:
+  echo>: ${start_msg}
+
++csv_to_db:
+  embulk>: ./datasource.yml
+
++raw_etl:
+  py>: ./datasource.yml
+
++end:
+  echo>: ${end_msg}
+
+_error:
+  echo>: ${error_msg}

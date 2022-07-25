@@ -15,6 +15,9 @@ chmod +x ~/bin/embulk
 
 # 今回利用するPluginをインストール
 embulk gem install embulk-input-postgresql
+embulk gem install embulk-output-postgresql
 embulk gem install embulk-output-parquet
 
-digdag server --config ./etc/digdag.properties --bind 0.0.0.0 --port 65432 --task-log /var/log/digdag/ --access-log /var/log/digdag
+chmod 755 -R /root/digdag_etl/
+
+digdag server --config /root/etc/digdag.properties --bind 0.0.0.0 --port 65432 --task-log /var/log/digdag/ --access-log /var/log/digdag

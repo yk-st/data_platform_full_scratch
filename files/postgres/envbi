@@ -5,7 +5,7 @@ MB_DB_DBNAME=metabase
 MB_DB_PORT=5432
 MB_DB_USER=postgres
 MB_DB_PASS=password
-MB_DB_HOST=postgres-mb
+MB_DB_HOST=metabase_postgres_big
 JAVA_TIMEZONE=Asia/Tokyo
 JAVA_OPTS=-Xmx6g
 

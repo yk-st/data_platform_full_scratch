@@ -1,5 +1,5 @@
 {
-	"name": "pyspark", // コンテナ表示名
+	"name": "pyspark_big", // コンテナ表示名
     "dockerComposeFile": "../docker-compose.yml",
 	"service": "workspace", // Docker Composeのサービス名
 	"remoteUser": "pyspark", // デフォルトユーザをrootから切り替える

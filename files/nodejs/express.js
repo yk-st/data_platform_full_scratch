@@ -2,7 +2,7 @@ const { Kafka } = require('kafkajs')
 
 const kafka = new Kafka({
     clientId: 'my-app',
-    brokers: ['kafka:9092']
+    brokers: ['kafka_big:9092']
 })
 const express = require('express');
 const app = express();
@@ -28,7 +28,7 @@ function senddata(action) {
 
         await producer.connect()
         await producer.send({
-            topic: 'pyspark-topic3',
+            topic: 'pyspark-topic',
             messages: [
                 {
                     "value": `{"name": "yuki_${Date.now()}", "action": "${action}", "sendtime": ${Date.now()}}`

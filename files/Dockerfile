@@ -1,8 +1,31 @@
-FROM python:3.9.1
+FROM openjdk:8
 
 RUN apt-get update 
 
 RUN apt-get install -y sudo
+
+# RUN apt-get -y install software-properties-common \
+#   && add-apt-repository ppa:openjdk-r/ppa \
+#   && sudo apt-get update \
+#   && sudo add-apt-repository --remove ppa:mc3man/trusty-media \
+#   && sudo apt-get install openjdk-8-jdk
+
+RUN apt-get update && apt-get install -y --no-install-recommends wget build-essential libreadline-dev \ 
+libncursesw5-dev libssl-dev libsqlite3-dev libgdbm-dev libbz2-dev liblzma-dev zlib1g-dev uuid-dev libffi-dev libdb-dev
+
+RUN apt-get update && apt-get install -y python3.9 python3.9-dev python3-distutils
+
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3 get-pip.py \
+    && pip install -U pip 
+
+#任意バージョンのpython install
+# RUN wget --no-check-certificate https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tgz \
+# && tar -xf Python-3.9.5.tgz \
+# && cd Python-3.9.5 \
+# && ./configure --enable-optimizations\
+# && make \
+# && make install
 
 RUN echo pyspark ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/pyspark\
     && chmod 0440 /etc/sudoers.d/pyspark
@@ -14,18 +37,18 @@ RUN groupadd pyspark
 
 RUN useradd -s /bin/bash pyspark -g pyspark
 
-RUN sudo apt install -y openjdk-11-jdk
+#RUN sudo apt install -y openjdk-11-jdk
 RUN sudo apt-get install -y default-mysql-client
 
 RUN sudo pip install findspark
 
 RUN sudo apt install -y git
+# 必要なものインストール
+RUN sudo touch /etc/apt/sources.list.d/pgdg.list
+RUN sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
+RUN sudo apt install -y postgresql-client
 
 WORKDIR /home/pyspark 
-
-RUN wget "https://dl.digdag.io/digdag-latest"
-RUN chmod 777 digdag-latest
-RUN echo 'export PATH="$HOME:$PATH"' >> ~/.bashrc
 
 RUN wget https://dlcdn.apache.org/spark/spark-3.2.2/spark-3.2.2-bin-hadoop3.2.tgz
 RUN tar -xzvf spark-3.2.2-bin-hadoop3.2.tgz
@@ -34,12 +57,26 @@ RUN sudo mkdir -p /tmp/spark-events
 RUN sudo chmod 777 -R /tmp/spark-events
 RUN sudo mkdir /var/log/spark/
 RUN sudo chmod 777 -R /var/log/spark
+RUN sudo mkdir /var/log/digdag/
+RUN sudo chmod 777 -R /var/log/digdag
 
 RUN sudo ln -s spark-3.2.2-bin-hadoop3.2 spark
+
+# localeの設定
+RUN apt-get -y install locales && \
+    localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
+ENV LANG ja_JP.UTF-8
+ENV LANGUAGE ja_JP:ja
+ENV LC_ALL ja_JP.UTF-8
+
+# timezone (Asia/Tokyo)の設定
+ENV TZ JST-9
 
 USER pyspark
 RUN echo "export SPARK_HOME=/home/pyspark/spark/" >> ~/.bashrc
 RUN echo "export PATH=${PATH}:/home/pyspark/spark/bin" >> ~/.bashrc
+RUN echo 'alias python="python3"' >> ~/.bashrc
+RUN echo 'alias pip="pip3"' >> ~/.bashrc
 
 RUN wget https://downloads.mysql.com/archives/get/p/3/file/mysql-connector-java-5.1.49.tar.gz
 RUN tar -xzvf /home/pyspark/mysql-connector-java-5.1.49.tar.gz

@@ -26,8 +26,17 @@ services:
   workspace:
     build: ./files
     command: sleep infinity
+    volumes:
+      - ./files/digdag:/root
+      - ./data/digdag_tmp:/tmp
+      - ./lectures/digdag/etl_files:/root/digdag_etl/
     depends_on:
       - mysql
+      - digdagdb
+    ports:
+      - "0.0.0.0:65432:65432"
+    entrypoint: >
+      sh -c "chmod 755 -R /root/digdag_etl/ && chmod 755 /root/startup.sh && /root/startup.sh && /bin/bash"
     container_name: pyspark_big
     networks:
       - app-net-big
@@ -41,7 +50,7 @@ services:
   # BIツール
   metabase:
     image: metabase/metabase:v0.42.3
-    env_file: ./postgres/envbi
+    env_file: ./files/postgres/envbi
     volumes:
       - ./data/metabase-data:/metabase-data
     ports:
@@ -53,11 +62,11 @@ services:
     container_name: metabase_bi_big
   # BIツールバックDB兼データソース
   postgres-mb:
-    build: ./postgres
+    build: ./files/postgres
     volumes:
       - ./data/postgres-data:/var/lib/postgresql/data
-      - ./posgreinit:/docker-entrypoint-initdb.d
-    env_file: ./postgres/envbi
+      - ./files/posgreinit:/docker-entrypoint-initdb.d
+    env_file: ./files/postgres/envbi
     ports:
       - 5432:5432
     networks:
@@ -66,39 +75,23 @@ services:
   # digdagデータ保存DBサーバー
   digdagdb:
     container_name: postgres_etl_big
-    build: ./postgres
+    build: ./files/postgres
     volumes:
       - ./data/postgres-data3:/var/lib/postgresql/data
       #- ./digdag/initsql:/docker-entrypoint-initdb.d
-    env_file: ./postgres/envdigdag
+    env_file: ./files/postgres/envdigdag
     ports:
       - 5434:5434
     command: -p 5434
     tty: true
     networks:
       - app-net-big
-  # digdagデータ保存DBサーバー
-  digdag:
-    container_name: digdag_etl_big
-    build: ./digdag
-    volumes:
-      - ./digdag:/root
-      - ./data/digdag_tmp:/tmp
-    ports:
-      - "0.0.0.0:65432:65432"
-    depends_on:
-      - digdagdb
-    entrypoint: >
-      sh -c "chmod 755 /root/startup.sh && /root/startup.sh && /bin/bash"
-    tty: true
-    networks:
-      - app-net-big
   # 整形データ格納用データベース
   postgres-data:
-    build: ./postgres
+    build: ./files/postgres
     volumes:
       - ./data/postgres-data2:/var/lib/postgresql/data
-    env_file: ./postgres/env2
+    env_file: ./files/postgres/env2
     ports:
       - 5433:5433
     command: -p 5433
