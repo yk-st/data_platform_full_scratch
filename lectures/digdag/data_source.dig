@@ -12,11 +12,14 @@ _export:
 +strat:
   echo>: ${start_msg}
 
-+csv_to_db:
++extract:
   embulk>: ./datasource.yml
 
-+raw_etl:
-  py>: ./datasource.yml
++transform:
+  sh>: spark-submit transform.py
+
++load:
+  embulk>: ./load.yml
 
 +end:
   echo>: ${end_msg}

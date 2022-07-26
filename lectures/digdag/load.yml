@@ -1,0 +1,28 @@
+in:
+  type: file
+  path_prefix: /tmp/share_file/datamart/orders/
+  parser:
+    charset: UTF-8
+    newline: CRLF
+    type: csv
+    delimiter: ','
+    quote: '"'
+    escape: '"'
+    trim_if_not_quoted: false
+    skip_hander_lines: 1
+    allow_extra_columns: false
+    allow_optional_columns: false
+    columns:
+    - {name: 'product_id', type: string}
+    - {name: 'user_id', type: string}
+ 
+out:
+  type: postgresql
+  mode: truncate_insert
+  default_timezone: "Asia/Tokyo"
+  host: postgres_data_big
+  port: 5433
+  user: postgres
+  password: "password"
+  database: accesslayer
+  table: etl_load

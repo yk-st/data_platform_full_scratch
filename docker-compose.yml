@@ -29,7 +29,7 @@ services:
     volumes:
       - ./files/digdag:/root
       - ./data/digdag_tmp:/tmp
-      - ./lectures/digdag/etl_files:/root/digdag_etl/
+      # - ./lectures/digdag/etl_files:/root/digdag_etl/
     depends_on:
       - mysql
       - digdagdb

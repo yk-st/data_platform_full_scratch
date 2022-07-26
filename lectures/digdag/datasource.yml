@@ -10,4 +10,6 @@ in:
     where product_id in (1, 10)
 out:
   type: parquet
-  path_prefix: ./tmp/share_file/raw/orders
+  path_prefix: /tmp/share_file/datalake/orders/orders
+  compression_codec: GZIP
+  overwrite: true

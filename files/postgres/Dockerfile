@@ -1,1 +1,1 @@
-FROM postgres:latest
+FROM postgres:10.21-alpine3.16
