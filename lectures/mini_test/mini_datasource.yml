@@ -5,9 +5,11 @@ in:
   user: postgres
   password: "password"
   database: metabase
-  query: |
-    select name,email
-    from people
+  select: "name,email"
+  column_options:
+    name: {value_type: string, type: string}
+    email: {value_type: string, type: string}
+  table: people
 out:
   type: parquet
   path_prefix: /tmp/share_file/datalake/people/people

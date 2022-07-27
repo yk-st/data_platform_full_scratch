@@ -28,7 +28,7 @@ def main():
     df.createOrReplaceTempView("web_actions")
     result_df=spark.sql("select key,name,action,sendtime from web_actions LATERAL VIEW json_tuple(value,'name','action','sendtime') user as name, action,sendtime ")
     # ファイルをCSVで吐き出す
-    df.coalesce(1).write.mode('overwrite').csv("/tmp/share_file/datamart/web_actions/")
+    result_df.coalesce(1).write.mode('overwrite').csv("/tmp/share_file/datamart/web_actions/")
 
     # 最後は停止処理をします
     spark.stop()

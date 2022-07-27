@@ -34,7 +34,7 @@ def main():
         group by action
     """)
     # ファイルをCSVで吐き出す
-    df.coalesce(1).write.mode('overwrite').csv("/tmp/share_file/datamart/web_actions_count/")
+    result_df.coalesce(1).write.mode('overwrite').csv("/tmp/share_file/datamart/web_actions_count/")
 
     # 最後は停止処理をします
     spark.stop()

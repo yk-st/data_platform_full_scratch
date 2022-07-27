@@ -21,12 +21,20 @@ spark = SparkSession.builder \
 # パッケージを複数渡したい時は「,」で繋いで渡します。
 # Sparkのバージョンにしっかりと合わせます(今回はSparkのバージョンが3.2.2を使っています。)。
 
+# 処理を停止しないようにします
+# ssc = StreamingContext(spark.sparkContext, 1)
+
 df = spark \
   .readStream \
   .format("kafka") \
   .option("kafka.bootstrap.servers", "kafka_big:9092") \
   .option("subscribe", "pyspark-topic") \
   .load()
+
+#　ちなみに別の方法も
+# producer = KafkaProducer(bootstrap_servers="kafka_big:9092", value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+# kafkaStream = KafkaUtils.createDirectStream(
+#     ssc, "pyspark-topic", {"metadata.broker.list": "kafka_big:9092"})
 
 file_stream = df \
   .selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)") \
@@ -38,3 +46,6 @@ file_stream = df \
   .trigger(processingTime="5 seconds") \
   .option("checkpointLocation", "/tmp/kafka/parquet/") \
   .start()
+
+# 処理が終了しないようにする
+file_stream.awaitTermination()
