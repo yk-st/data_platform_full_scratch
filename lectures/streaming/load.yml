@@ -1,0 +1,30 @@
+in:
+  type: file
+  path_prefix: /tmp/share_file/datamart/web_actions/
+  parser:
+    charset: UTF-8
+    newline: CRLF
+    type: csv
+    delimiter: ','
+    quote: '"'
+    escape: '"'
+    trim_if_not_quoted: false
+    skip_hander_lines: 1
+    allow_extra_columns: false
+    allow_optional_columns: false
+    columns:
+    - {name: 'key', type: string}
+    - {name: 'name', type: string}
+    - {name: 'action', type: string}
+    - {name: 'send_time', type: string}
+ 
+out:
+  type: postgresql
+  mode: truncate_insert
+  default_timezone: "Asia/Tokyo"
+  host: postgres_data_big
+  port: 5433
+  user: postgres
+  password: "password"
+  database: accesslayer
+  table: web_actions

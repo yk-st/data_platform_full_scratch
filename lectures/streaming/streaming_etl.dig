@@ -1,7 +1,5 @@
 timezone: Asia/Tokyo
 
-# https://www.digdag.io/
-
 schedule:
   daily>: 07:00:00
 
@@ -14,8 +12,7 @@ _export:
 +strat:
   echo>: ${start_msg}
 
-+extract:
-  embulk>: ./datasource.yml
+# extractは今回なし
 
 +transform:
   sh>: spark-submit transform.py

@@ -23,6 +23,13 @@ app.get('/', (req, res) => {
 });
 
 function senddata(action) {
+    let today = new Date();
+ 
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let date = today.getDate();
+    let date_str = year + '-' + month.toString().padStart(2, "0") + '-' + date;
+    
     (async () => {
         const producer = kafka.producer()
 
@@ -31,7 +38,7 @@ function senddata(action) {
             topic: 'pyspark-topic',
             messages: [
                 {
-                    "value": `{"name": "yuki_${Date.now()}", "action": "${action}", "sendtime": ${Date.now()}}`
+                    key: `${date_str}`, "value": `{"name": "yuki_${Date.now()}", "action": "${action}", "sendtime": ${Date.now()}}`
                 },
             ],
         })
