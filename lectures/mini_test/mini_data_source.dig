@@ -1,0 +1,30 @@
+timezone: Asia/Tokyo
+
+# https://www.digdag.io/
+
+schedule:
+  daily>: 07:00:00
+
+_export:
+  workflow_name: "minitest"
+  start_msg:     "digdag ${workflow_name} start"
+  end_msg:       "digdag ${workflow_name} finish"
+  error_msg:     "digdag ${workflow_name} error"
+
++strat:
+  echo>: ${start_msg}
+
++extract:
+  embulk>: ./mini_datasource.yml
+
++transform:
+  sh>: spark-submit mini_transform.py
+
++load:
+  embulk>: ./mini_load.yml
+
++end:
+  echo>: ${end_msg}
+
+_error:
+  echo>: ${error_msg}

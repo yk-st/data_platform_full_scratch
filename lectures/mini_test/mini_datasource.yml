@@ -1,0 +1,15 @@
+# SELECTは*でもOKです。
+in:
+  type: postgresql
+  host: metabase_postgres_big
+  user: postgres
+  password: "password"
+  database: metabase
+  query: |
+    select name,email
+    from people
+out:
+  type: parquet
+  path_prefix: /tmp/share_file/datalake/people/people
+  compression_codec: GZIP
+  overwrite: true

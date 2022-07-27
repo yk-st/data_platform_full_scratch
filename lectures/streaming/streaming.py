@@ -28,16 +28,6 @@ df = spark \
   .option("subscribe", "pyspark-topic") \
   .load()
 
-# メモリシンク
-memory_sink = df \
-  .selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)") \
-  .writeStream \
-  .format("memory") \
-  .queryName("web_actions") \
-  .trigger(processingTime="5 seconds") \
-  .option("checkpointLocation", "/tmp/kafka/web_memory/") \
-  .start()
-
 file_stream = df \
   .selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)") \
   .writeStream \
