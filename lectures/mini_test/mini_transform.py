@@ -22,9 +22,12 @@ def main():
     .enableHiveSupport() \
     .getOrCreate()
 
-    # jinko.csvの読み込み
+    # parquetの読み込み
     df=spark.read.parquet("/tmp/share_file/datalake/people/")
-    df.coalesce(1).write.mode('overwrite').csv("/tmp/share_file/datamart/people/")
+    # テンポラリ
+    df.createOrReplaceTempView("hoge")
+    result = spark.sql("select cast(name as string) , cast(email as string), id, cast(source as string) from hoge")
+    result.coalesce(1).write.mode('overwrite').csv("/tmp/share_file/datamart/people/")
 
     # 最後は停止処理をします
     spark.stop()

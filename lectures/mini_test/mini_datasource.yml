@@ -1,14 +1,11 @@
-# SELECTは*でもOKです。
+# queryを使ってもOKです。
 in:
   type: postgresql
   host: metabase_postgres_big
   user: postgres
   password: "password"
   database: metabase
-  select: "name,email"
-  column_options:
-    name: {value_type: string, type: string}
-    email: {value_type: string, type: string}
+  select: name,email,id,source
   table: people
 out:
   type: parquet
