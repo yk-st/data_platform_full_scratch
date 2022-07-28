@@ -42,7 +42,7 @@ RUN sudo apt-get install -y default-mysql-client
 
 RUN sudo pip install findspark
 
-RUN sudo apt install -y git
+RUN sudo apt install -y git vim
 # 必要なものインストール
 RUN sudo touch /etc/apt/sources.list.d/pgdg.list
 RUN sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
