@@ -3,6 +3,8 @@ from pyspark import SparkConf
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
 
+#sudo apt install -y git vim
+
 #spark sessionの作成
 # spark.ui.enabled trueとするとSparkのGUI画面を確認することができます
 # spark.eventLog.enabled true　とすると　GUIで実行ログを確認することができます
@@ -40,7 +42,7 @@ file_stream = df \
   .selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)") \
   .writeStream \
   .format("parquet") \
-  .option("path", "/tmp/share_file/datalake/web_actions") \
+  .option("path", "/tmp/share_file/datalake/web_actions/") \
   .outputMode("append") \
   .partitionBy("key") \
   .trigger(processingTime="5 seconds") \

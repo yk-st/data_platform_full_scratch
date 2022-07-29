@@ -16,7 +16,7 @@ in:
     - {name: 'key', type: string}
     - {name: 'name', type: string}
     - {name: 'action', type: string}
-    - {name: 'send_time', type: string}
+    - {name: 'sendtime', type: string}
  
 out:
   type: postgresql

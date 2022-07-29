@@ -15,10 +15,10 @@ _export:
 # extractは今回なし
 
 +transform:
-  sh>: spark-submit transform.py
+  sh>: spark-submit transform2.py
 
 +load:
-  embulk>: ./load.yml
+  embulk>: ./load2.yml
 
 +end:
   echo>: ${end_msg}

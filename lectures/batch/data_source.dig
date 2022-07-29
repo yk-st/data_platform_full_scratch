@@ -1,6 +1,8 @@
 timezone: Asia/Tokyo
 
 # https://www.digdag.io/
+# mkdir -p /tmp/spark-events
+# chmod 777 /tmp/spark-events
 
 schedule:
   daily>: 07:00:00

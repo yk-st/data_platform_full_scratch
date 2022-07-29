@@ -24,6 +24,7 @@ def main():
 
     # jinko.csvの読み込み
     df=spark.read.parquet("/tmp/share_file/datalake/orders/")
+    # 処理なし
     df.coalesce(1).write.mode('overwrite').csv("/tmp/share_file/datamart/orders/")
 
     # 最後は停止処理をします
