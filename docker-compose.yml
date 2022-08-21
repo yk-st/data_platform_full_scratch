@@ -3,11 +3,13 @@ services:
   #　メタデータ保存用Mysql
   mysql:
     platform: linux/x86_64
-    image: mysql:5.7
+    build:
+      context: mysql_build
+      dockerfile: Dockerfile
     volumes:
-      - ./data/mysql/data:/var/lib/mysql
-      - ./files/hiveddls:/docker-entrypoint-initdb.d
-      - ./files/share/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./mysql/data:/var/lib/mysql
+      - ./hiveddls:/docker-entrypoint-initdb.d
+      - ./share/my.cnf:/etc/mysql/conf.d/my.cnf
     restart: always
     environment:
       MYSQL_DATABASE: metastore
@@ -36,7 +38,7 @@ services:
     ports:
       - "0.0.0.0:65432:65432"
     entrypoint: >
-      sh -c "chmod 755 -R /root/digdag_etl/ && chmod 755 /root/startup.sh && /root/startup.sh && /bin/bash"
+      sh -c "chmod 755 /root/startup.sh && /root/startup.sh && /bin/bash"
     container_name: pyspark_big
     networks:
       - app-net-big
