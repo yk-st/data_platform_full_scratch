@@ -29,3 +29,4 @@ https://www.udemy.com/course/dataplatform_local/?referralCode=FFAE0C4DC02083D63D
 # 更新履歴
 1. 2021/07/35 : first commit
 2. 2022/08/21 : mysqlの設定を環境に寄らないようにしました。
+3. 2022/08/22 : postgresの設定を環境に寄らないようにしました。
