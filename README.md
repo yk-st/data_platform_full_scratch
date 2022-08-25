@@ -34,3 +34,4 @@ https://www.udemy.com/course/mlops-pf-and-ml/?referralCode=E6DF74BCFAE60315F390
 1. 2021/07/35 : first commit
 2. 2022/08/21 : mysqlの設定を環境に寄らないようにしました。
 3. 2022/08/22 : postgresの設定を環境に寄らないようにしました。
+4. 2022/08/25 : 【実戦で学ぶ基盤構築】ローカル端末で作り理解するエンジニアのための機械学習基盤の作成とMLOps コースの追加をしました
