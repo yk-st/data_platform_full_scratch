@@ -26,6 +26,7 @@ def main():
     df=spark.read.parquet("/tmp/share_file/datalake/people/")
     # テンポラリ
     df.createOrReplaceTempView("hoge")
+    # string型のデータをembulkで取得するとbinary型となってしまうため、一度StringにCastしないといけない。
     result = spark.sql("select cast(name as string) , cast(email as string), id, cast(source as string) from hoge")
     result.coalesce(1).write.mode('overwrite').csv("/tmp/share_file/datamart/people/")
 
