@@ -38,7 +38,7 @@ services:
     ports:
       - "0.0.0.0:65432:65432"
     entrypoint: >
-      sh -c "chmod 755 /root/startup.sh && /root/startup.sh && /bin/bash"
+      sh -c "/root/startup.sh && /bin/bash"
     container_name: pyspark_big
     networks:
       - app-net-big
