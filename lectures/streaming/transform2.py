@@ -18,7 +18,7 @@ def main():
     .config("hive.exec.dynamic.partition.mode", "nonstrict") \
     .config("spark.sql.session.timeZone", "JST") \
     .config("spark.ui.enabled","true") \
-    .config("spark.eventLog.enabled","true") \
+    .config("spark.eventLog.enabled","false") \
     .enableHiveSupport() \
     .getOrCreate()
 
