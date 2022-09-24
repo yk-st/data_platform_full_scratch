@@ -14,6 +14,7 @@ chmod +x ~/bin/embulk
 #source ~/.bash_profile
 
 # 今回利用するPluginをインストール
+embulk gem install jruby-openssl -v 0.10.4
 embulk gem install embulk-input-postgresql
 embulk gem install embulk-output-postgresql
 embulk gem install embulk-output-parquet
