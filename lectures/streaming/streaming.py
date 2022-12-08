@@ -16,12 +16,12 @@ spark = SparkSession.builder \
     .config("spark.sql.session.timeZone", "JST") \
     .config("spark.ui.enabled","true") \
     .config("spark.eventLog.enabled","true") \
-    .config("spark.jars.packages", "org.apache.spark:spark-streaming_2.13:3.2.2,org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.2,org.apache.spark:spark-avro_2.12:3.2.2") \
+    .config("spark.jars.packages", "org.apache.spark:spark-streaming_2.13:3.2.3,org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.3,org.apache.spark:spark-avro_2.12:3.2.3") \
     .enableHiveSupport() \
     .getOrCreate()
 
 # パッケージを複数渡したい時は「,」で繋いで渡します。
-# Sparkのバージョンにしっかりと合わせます(今回はSparkのバージョンが3.2.2を使っています。)。
+# Sparkのバージョンにしっかりと合わせます(今回はSparkのバージョンが3.2.3を使っています。)。
 
 # 処理を停止しないようにします
 # ssc = StreamingContext(spark.sparkContext, 1)
