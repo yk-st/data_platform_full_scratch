@@ -1,5 +1,8 @@
 FROM openjdk:8
 
+RUN echo "deb http://deb.debian.org/debian/ bullseye main contrib" > /etc/apt/sources.list &&\
+    echo "deb http://deb.debian.org/debian/ bullseye-updates main contrib" >> /etc/apt/sources.list
+
 RUN apt-get update 
 
 RUN apt-get install -y sudo
