@@ -53,8 +53,8 @@ RUN sudo apt install -y postgresql-client
 
 WORKDIR /home/pyspark 
 
-RUN wget https://dlcdn.apache.org/spark/spark-3.2.3/spark-3.2.3-bin-hadoop3.2.tgz
-RUN tar -xzvf spark-3.2.3-bin-hadoop3.2.tgz
+RUN wget https://dlcdn.apache.org/spark/spark-3.2.4/spark-3.2.4-bin-hadoop3.2.tgz
+RUN tar -xzvf spark-3.2.4-bin-hadoop3.2.tgz
 
 RUN sudo mkdir -p /tmp/spark-events 
 RUN sudo chmod 777 -R /tmp/spark-events
@@ -63,7 +63,7 @@ RUN sudo chmod 777 -R /var/log/spark
 RUN sudo mkdir /var/log/digdag/
 RUN sudo chmod 777 -R /var/log/digdag
 
-RUN sudo ln -s spark-3.2.3-bin-hadoop3.2 spark
+RUN sudo ln -s spark-3.2.4-bin-hadoop3.2 spark
 
 # localeの設定
 RUN apt-get -y install locales && \
