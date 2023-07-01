@@ -35,7 +35,6 @@ RUN echo pyspark ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/pyspark\
 
 RUN sudo mkdir -p /home/pyspark
 RUN sudo chmod 777 -R /home/pyspark
-RUN sudo chmod 777 -R /root/startup.sh
 
 RUN groupadd pyspark
 
