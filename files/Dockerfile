@@ -41,7 +41,8 @@ RUN groupadd pyspark
 RUN useradd -s /bin/bash pyspark -g pyspark
 
 #RUN sudo apt install -y openjdk-11-jdk
-RUN sudo apt-get install -y default-mysql-client
+RUN sudo apt update
+RUN sudo apt install -y default-mysql-client
 
 RUN sudo pip install findspark
 
