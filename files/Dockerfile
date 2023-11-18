@@ -36,6 +36,8 @@ RUN echo pyspark ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/pyspark\
 RUN sudo mkdir -p /home/pyspark
 RUN sudo chmod 777 -R /home/pyspark
 
+RUN sudo ls
+
 RUN groupadd pyspark
 
 RUN useradd -s /bin/bash pyspark -g pyspark
@@ -54,7 +56,7 @@ RUN sudo apt install -y postgresql-client
 
 WORKDIR /home/pyspark 
 
-RUN wget https://dlcdn.apache.org/spark/spark-3.2.4/spark-3.2.4-bin-hadoop3.2.tgz
+RUN wget https://archive.apache.org/dist/spark/spark-3.2.4/spark-3.2.4-bin-hadoop3.2.tgz
 RUN tar -xzvf spark-3.2.4-bin-hadoop3.2.tgz
 
 RUN sudo mkdir -p /tmp/spark-events 
