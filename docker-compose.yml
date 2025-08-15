@@ -32,9 +32,9 @@ services:
       - ./files/digdag:/root
       - ./data/digdag_tmp:/tmp
       # - ./lectures/digdag/etl_files:/root/digdag_etl/
-    depends_on:
-      - mysql
-      - digdagdb
+    # depends_on:
+    #   - mysql
+    #   - digdagdb
     ports:
       - "0.0.0.0:65432:65432"
     entrypoint: >

@@ -1,11 +1,14 @@
-FROM python:3.9.1
+FROM python:3.9-slim-bullseye
 
-RUN apt-get update 
-
-RUN apt-get install -y sudo
-
-RUN sudo apt install -y openjdk-11-jdk
-RUN sudo apt-get install -y default-mysql-client
+# busterリポジトリをarchiveへ、期限チェックを無効化して更新
+RUN set -eux; \
+  apt-get update; \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    openjdk-11-jre-headless \
+    default-mysql-client \
+    ca-certificates \
+    curl tar \
+  && rm -rf /var/lib/apt/lists/*
 
 COPY kafka_2.13-3.0.2.tgz /
 #RUN wget https://dlcdn.apache.org/kafka/3.0.2/kafka_2.13-3.0.2.tgz

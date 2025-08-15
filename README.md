@@ -38,3 +38,4 @@ https://www.udemy.com/course/mlops-pf-and-ml/?referralCode=E6DF74BCFAE60315F390
 5. 2022/09/08 : 不要なコマンドを削除しました。
 6. 2023/01/21 : bullseyeのリポジトリパッケージを更新しました。
 7. 2023/11/19 : Sparkのバージョン固定をしました
+8. 2025/08/15 : DebianのEOLへの対応をしました。
